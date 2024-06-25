@@ -1,0 +1,17 @@
+<launch>
+    <!-- 使用模擬時間 -->
+    <param name="use_sim_time" value="true"/>
+
+    <!-- 定義機器人模型參數 -->
+    <param name="robot_description" command="$(find xacro)/xacro $(find wander_bot)/urdf/myrobot_1103736.xacro"/>
+
+    <!-- 啟動Gazebo，並載入自訂地圖 -->
+    <node name="gazebo" pkg="gazebo_ros" type="gzserver" args="-s libgazebo_ros_factory.so $(find wander_bot)/worlds/my_house.sdf" output="screen"/>
+    <node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" output="screen"/>
+
+    <!-- 載入自訂機器人模型 -->
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model my_robot" output="screen"/>
+
+    <!-- 啟動機器人節點 -->
+    <node name="wander_bot" pkg="wander_bot" type="wander_bot" output="screen"/>
+</launch>
